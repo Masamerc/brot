@@ -1,6 +1,6 @@
 # Brot: personal discord bot util
 
-## v0.1.1
+## v0.1.2
 Supported channels:
 - general
 - logs

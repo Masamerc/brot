@@ -62,7 +62,7 @@ func brotInit() (*discordgo.Session, error) {
 	}
 
 	// load environment variables
-	botToken := os.Getenv("BOT_TOKEN")
+	botToken := os.Getenv("BROT_TOKEN")
 
 	// initialize bot
 	sesh, err := discordgo.New("Bot " + botToken)
