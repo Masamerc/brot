@@ -1,9 +1,11 @@
 package brot
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
-	"os"
 )
 
 type ChannelType string
@@ -43,7 +45,10 @@ func Shout(msg string, channelType ChannelType) error {
 		}
 	default:
 		channel = Channel{}
+	}
 
+	if channel.Id == "" {
+		return fmt.Errorf("channel id not found")
 	}
 
 	_, err = sesh.ChannelMessageSend(channel.Id, msg)
