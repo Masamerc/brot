@@ -3,17 +3,17 @@ package brot
 import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
+	"os"
 )
 
 type ChannelType string
 
 const (
 	General ChannelType = "general"
-	Logs ChannelType = "logs"
+	Logs    ChannelType = "logs"
 )
 
 type Channel struct {
-	Type ChannelType
 	Id string
 }
 
@@ -22,35 +22,40 @@ type Channel struct {
 // returns error if message fails to send
 //
 // requires environment variables: CHANNEL_ID_GENERAL, CHANNEL_ID_LOGS, BOT_TOKEN
-func Shout(msg string, channelType ChannelType ) error {
+func Shout(msg string, channelType ChannelType) error {
 	sesh, err := brotInit()
 	if err != nil {
 		return err
 	}
 
+	var channel Channel
+
 	switch channelType {
-		case General:
+	case General:
 		chennelId := os.Getenv("CHANNEL_ID_GENERAL")
-		channel := Channel{
-			Type: channelType,
+		channel = Channel{
 			Id: chennelId,
 		}
-		case Logs:
+	case Logs:
 		channelId := os.Getenv("CHANNEL_ID_LOGS")
-		channel := Channel{
-			Type: channelType,
+		channel = Channel{
 			Id: channelId,
 		}
+	default:
+		channel = Channel{}
+
 	}
 
 	_, err = sesh.ChannelMessageSend(channel.Id, msg)
 	if err != nil {
 		return err
 	}
+
+	return nil
 }
 
 // load environment variables and initialize bot
-func brotInit() *discordgo.Session, error {
+func brotInit() (*discordgo.Session, error) {
 	err := godotenv.Load()
 	if err != nil {
 		return nil, err
